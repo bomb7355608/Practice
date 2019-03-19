@@ -1,12 +1,12 @@
 //#include "stdafx.h"
 #include <stdio.h>
 #include <winsock2.h>
-
+#include "TrashFile.cpp"
 #pragma comment(lib,"ws2_32.lib")
 
 int main(int argc, char* argv[])
 {
- //³õÊ¼»¯WSA
+ //åˆå§‹åŒ–WSA
     WORD sockVersion = MAKEWORD(2,2);
     WSADATA wsaData;
     if(WSAStartup(sockVersion, &wsaData)!=0)
@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    //´´½¨Ì×½Ó×Ö
+    //åˆ›å»ºå¥—æ¥å­—
     SOCKET slisten = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if(slisten == INVALID_SOCKET)
     {
@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    //°ó¶¨IPºÍ¶Ë¿Ú
+    //ç»‘å®šIPå’Œç«¯å£
     sockaddr_in sin;
     sin.sin_family = AF_INET;
     sin.sin_port = htons(8888);
@@ -32,14 +32,14 @@ int main(int argc, char* argv[])
         printf("bind error !");
     }
 
-    //¿ªÊ¼¼àÌı
+    //å¼€å§‹ç›‘å¬
     if(listen(slisten, 5) == SOCKET_ERROR)
     {
         printf("listen error !");
         return 0;
     }
 
-    //Ñ­»·½ÓÊÕÊı¾İ
+    //å¾ªç¯æ¥æ”¶æ•°æ®
     SOCKET sClient;
     sockaddr_in remoteAddr;
     int nAddrlen = sizeof(remoteAddr);
@@ -53,9 +53,9 @@ int main(int argc, char* argv[])
             printf("accept error !");
             continue;
         }
-        printf("New connection established£º%s \r\n", inet_ntoa(remoteAddr.sin_addr));
+        printf("New connection establishedï¼š%s \r\n", inet_ntoa(remoteAddr.sin_addr));
     
-        //½ÓÊÕÊı¾İ
+        //æ¥æ”¶æ•°æ®
         int ret = recv(sClient, revData, 255, 0);       
         if(ret > 0)
         {
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
             printf("%s\n",revData);
         }
 
-        //·¢ËÍÊı¾İ
+        //å‘é€æ•°æ®
         send(sClient, revData, strlen(revData), 0);
         closesocket(sClient);
     }
